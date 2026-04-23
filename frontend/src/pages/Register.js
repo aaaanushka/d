@@ -27,16 +27,16 @@ function Register() {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:5000/api/signup",
+        "https://d-dghx.onrender.com/api/signup",
         data
       );
 
       console.log("SUCCESS:", res.data);
 
       alert("Registered successfully ✅");
+      // only change this part
+navigate("/");
 
-      // 👉 redirect to login
-      navigate("/");
 
     } catch (err) {
       console.log("ERROR:", err.response?.data);

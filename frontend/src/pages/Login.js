@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
-function Login() {
+function Login({ setIsAuth }) {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -11,14 +11,23 @@ function Login() {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/login",
+        "https://d-dghx.onrender.com/api/login",
         { email, password }
       );
 
+      console.log("LOGIN RESPONSE:", res.data);
+
+      if (!res.data.token) {
+        return alert("Token not received from server");
+      }
+
       localStorage.setItem("token", res.data.token);
+
+      setIsAuth(true);   // 🔥 IMPORTANT FIX
       navigate("/dashboard");
 
     } catch (err) {
+      console.log("LOGIN ERROR:", err.response?.data);
       alert(err.response?.data?.message || "Login failed");
     }
   };
@@ -30,8 +39,7 @@ function Login() {
       padding: "20px",
       border: "1px solid #ccc",
       borderRadius: "10px",
-      textAlign: "center",
-      boxShadow: "0 0 10px rgba(0,0,0,0.1)"
+      textAlign: "center"
     }}>
       <h2>Login</h2>
 
